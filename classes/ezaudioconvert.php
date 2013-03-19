@@ -109,18 +109,25 @@ class ezAudioConvert extends eZPersistentObject
         if ($mimeTypeCategory == 'audio')
         {
             //check if we need to create an mp3 version of the file.
-            if ($mimeTypePart != 'mp3')
-            {
-                $LogEntry = 'File is not MP3. Conversion to MP3 and OGG will occur';
-                $convertMp3 = true;
-                $convertOgg = true;
-            }
-            else
+            if ($mimeTypePart == 'mp3')
             {
                 $LogEntry = 'File is MP3. Conversion to OGG will occur';
                 $convertMp3 = false;
                 $convertOgg = true;
             }
+            else if ($mimeTypePart == 'ogg')
+            {
+                $LogEntry = 'File is OGG. Conversion to MP3 will occur';
+                $convertMp3 = true;
+                $convertOgg = false;
+            }
+            else
+            {
+                $LogEntry = 'File is not MP3 or OGG. Conversion will occur';
+                $convertMp3 = true;
+                $convertOgg = true;
+            }
+
             
             eZLog::write( $LogEntry, 
                           $logName = 'convert.log', 
@@ -133,11 +140,20 @@ class ezAudioConvert extends eZPersistentObject
             {
                 $this->convertFile('mp3');
             }
+            else
+            {
+                $this->copyFile();
+            }
             
             if ($convertOgg)
             {
                 $this->convertFile('ogg');
             }
+            else
+            {
+                $this->copyFile();
+            }
+
         }
         else
         {
@@ -149,6 +165,21 @@ class ezAudioConvert extends eZPersistentObject
                                   'ezaudioconvert.php' );
         }
 
+    }
+    
+    function copyFile()
+    {
+        $ini = eZINI::instance( "ezaudioconvert.ini" );  
+        // get the settings for the file
+        $rootPath = $ini->variable( "FileSettings", "rootPath" );
+
+        $filePathArray = $this->originalFilePath();
+        
+        $originalFilePath = $filePathArray['filePath'].$filePathArray['fileName'].'.'.$filePathArray['fileSuffix'];
+        
+        $newFilePath = $filePathArray['currentVerstionConvertedPath'].'/'.$filePathArray['fileName'].'.'.$filePathArray['fileSuffix'];
+        
+        copy($originalFilePath, $newFilePath);
     }
     
     function convertFile($type = 'mp3')
