@@ -15,7 +15,7 @@ If you manually install you will ned at a bare minimum LAME and libvorbis. As th
 
 Installation
 ==============
-To install simply place the extension files into /<path/to/ezpublish>/extension/ezaudioconvert/
+To install simply place the extension files into /path/to/ezpublish/root/extension/ezaudioconvert/
 
 1) In site.ini.append.php add the below. [ExtensionSettings] will already exist. Just add the ActiveExtensions[]=ezaudioconvert to the list.
 
@@ -51,3 +51,4 @@ Credits
 
 The audio player used can be found at http://pupunzi.open-lab.com/mb-jquery-components/jquery-mb-miniaudioplayer/
 
+You can find more out about it here http://daniel.clements.id.au/Blog/eZ-Audio-Converter-an-eZ-Publish-4.x-Extension
