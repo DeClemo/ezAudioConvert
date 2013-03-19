@@ -5,7 +5,7 @@ class NewAudioType extends eZWorkflowEventType
     const WORKFLOW_TYPE_STRING = "newaudio";
     public function __construct()
     {
-        parent::__construct( TwitterStatusUpdateType::WORKFLOW_TYPE_STRING, 'New Audio' );
+        parent::__construct( NewAudioType::WORKFLOW_TYPE_STRING, 'New Audio' );
     }
  
     public function execute( $process, $event )
@@ -14,17 +14,13 @@ class NewAudioType extends eZWorkflowEventType
         /*  YOUR CODE GOES HERE */
         
         $objectID = $parameters['object_id']; 
-        $object = eZContentObject::fetch( $objectID );
-        $nodeID = $object->attribute( 'main_node_id' );
-        $node = eZContentObjectTreeNode::fetch( $nodeID );
-        $datamap = $object->dataMap();
         
-        $fileAttribute = $datamap['file'];
-        
-        
+        $convert = ezAudioConvert::fetch( $objectID );
+
+        $convert->convertAudio();        
         
         return eZWorkflowType::STATUS_ACCEPTED;
     }
 }
-eZWorkflowEventType::registerEventType( TwitterStatusUpdateType::WORKFLOW_TYPE_STRING, 'newaudiotype' );
+eZWorkflowEventType::registerEventType( NewAudioType::WORKFLOW_TYPE_STRING, 'newaudiotype' );
 ?>
