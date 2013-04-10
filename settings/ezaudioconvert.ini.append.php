@@ -7,4 +7,8 @@ rootPath=/home/musiclab/public_html/
 ffmpegExecutable=ffmpeg
 attributeIdentifier=file
 
+
+[ConversionSettings]
+doConvertOnPlayerDisplay=enabled
+
 */ ?>

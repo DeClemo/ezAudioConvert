@@ -380,6 +380,15 @@ class ezAudioConvert extends eZPersistentObject
         $tpl->setVariable( 'filePath', $filePath );
         $tpl->setVariable( 'eZAudio', $this );
         
+        //set doConvertOnPlayerDisplay to disabled to stop the check for conversion.
+        $ini = eZINI::instance( "ezaudioconvert.ini" );
+        $doConvertOnPlayerDisplay = $ini->variable( "ConversionSettings", "doConvertOnPlayerDisplay" );
+        
+        //check if file exists and do the conversion if it doesn't
+        if ( (!file_exists($filePath.'/'.$fileName.'.mp3')) && ($doConvertOnPlayerDisplay == 'enabled') ) {
+            $this->doConvertAudio();
+        }
+        
         return $tpl->fetch( 'design:ezaudio/player.tpl' );
     }
     
